@@ -19,3 +19,17 @@ ignored by the program.  Everything before the first `:`, or after the
 first `#` is removed.  Whitespace is stripped.  If there are any invalid
 hex characters after this transformation, or if the result is an odd
 number of hex digits, then an error is thrown.
+
+You need to set a blocking editor as your `EDITOR` environment
+variable.  `vim` works, or if you're on a Mac and use TextMate, you can
+use `mate_wait`.  Anything that works for commit messages should be
+fine.
+
+## Installing
+
+```
+npm install hexedit -g
+```
+
+There is no module to `require()`.  It's strictly a command-line
+utility.
