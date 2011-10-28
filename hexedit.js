@@ -70,6 +70,9 @@ function update (exit, code) {
       bytes = new Buffer(c, "hex")
     } catch (ex) {
       console.error(ex.message)
+      if (exit === true && typeof code === "number") {
+        process.exit(code || 1)
+      }
       return
     }
 
