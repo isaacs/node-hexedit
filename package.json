@@ -2,7 +2,7 @@
   "author": "Isaac Z. Schlueter <i@izs.me> (http://blog.izs.me/)",
   "name": "hexedit",
   "description": "Hexadecimal Editor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "preferGlobal": true,
   "bin": "./hexedit.js",
   "repository": {
