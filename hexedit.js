@@ -6,25 +6,84 @@ var editor = process.env.EDITOR
 var child_process = require("child_process")
 var fs = require("fs")
 var path = require("path")
-var tmp = process.env.TMPDIR || process.env.TEMP || process.env.TMP || "/tmp"
 
-if (process.argv.length !== 3) {
-  console.error("Usage: hexedit <file>")
-  process.exit(1)
+
+var nopt = require("nopt")
+var opts = nopt({ width: Number
+                , numbering: ["hex_bytes", "none"]
+                , format: ["fours", "twos", "none"]
+                , caps: ["lower", "upper"]
+                , annotate: ["ascii", "none"]
+                , prefix: String
+                , indent: Number
+                , help: Boolean }, { h: '--help' })
+
+var defaults = { width: 16
+               , numbering: "hex_bytes"
+               , format: "fours"
+               , caps: "lower"
+               , annotate: "ascii"
+               , prefix: ""
+               , indent: 0 }
+
+if (opts.argv.remain.length !== 1 || opts.help) {
+  console.error("Usage: hexedit [options] <file>")
+  console.error("Options are identical to hexy's:")
+  console.error(' --width     [(16)]              how many bytes per line')
+  console.error(' --numbering [(hex_bytes)|none]  prefix current byte count')
+  console.error(' --format    [(fours)|twos|none] how many nibbles per group')
+  console.error(' --caps      [(lower)|upper]     case of hex chars')
+  console.error(' --annotate  [(ascii)|none]      provide ascii annotation')
+  console.error(' --prefix    [("")|<prefix>]     printed in front of each line')
+  console.error(' --indent    [(0)|<num>]         number of spaces to indent output')
+  console.error(' --help|-h                       display this message')
+  process.exit(opts.help ? 0 : 1)
 }
 
-var file = path.resolve(process.argv[2])
+var file = path.resolve(opts.argv.remain[0])
 
-tmp += "/.hexedit-" + (file.replace(/[\/\. \t]/g, "-")) + ".hex"
+var tmp = path.resolve(
+  path.dirname(file), ".hexedit-" + path.basename(file) + ".hex"
+)
+
+// Bytes start at:
+// indent + prefix + (numbering ? 10 : 0)
+//
+// Bytes go for:
+// 2 * width + (spaces)
+// spaces = format === fours ? width/2 - 1 : format == twos ? width/4 -1 : 0
+
+opts.__proto__ = defaults
+var n = opts.prefix.length
+      + opts.indent
+
+var header = "# "
+if (opts.numbering !== "none") {
+  header += new Array(n + 1).join(" ") + "offset: "
+  n += 10
+}
+var width = opts.width
+var spaces = opts.format === "fours" ? Math.ceil(width / 2) - 1
+           : opts.format === "twos"  ? width + 1
+           : 0
+
+var b = 2 * opts.width + spaces
+n += b + 1
+header += "data" + (new Array(b - 1).join(" "))
+
+if (opts.annotate !== "none") {
+  header += "# ascii"
+}
 
 var hexy = require("hexy").hexy
 var buf = new Buffer(
-  ["# offset: data                                    # ASCII value."]
-  .concat(
-    hexy(fs.readFileSync(file))
+  [ header ].concat(
+    // hexy(fs.readFileSync(file), { width: 256, format: "none" })
+    hexy(fs.readFileSync(file), opts)
       .split("\n")
       .map(function (s) {
-         return s.replace(/^(.{50})/, "$1#")
+        if (!s.trim()) return s.trim()
+        return s.slice(0, n + 1) + "#" + s.slice(n)
       })
   ).join("\n")
 )

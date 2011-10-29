@@ -33,3 +33,19 @@ npm install hexedit -g
 
 There is no module to `require()`.  It's strictly a command-line
 utility.
+
+## Options
+
+Hexedit takes all the same options that `hexy` takes, and they do the
+same things.
+
+    Usage: hexedit [options] <file>
+    Options are identical to hexy's:
+     --width     [(16)]              how many bytes per line
+     --numbering [(hex_bytes)|none]  prefix current byte count
+     --format    [(fours)|twos|none] how many nibbles per group
+     --caps      [(lower)|upper]     case of hex chars
+     --annotate  [(ascii)|none]      provide ascii annotation
+     --prefix    [("")|<prefix>]     printed in front of each line
+     --indent    [(0)|<num>]         number of spaces to indent output
+     --help|-h                       display this message
