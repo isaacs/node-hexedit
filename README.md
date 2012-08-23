@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/isaacs/node-hexedit.png)](http://travis-ci.org/isaacs/node-hexedit)
 This is a hexadecimal editor.  Here's how it works:
 
 1. You type `hexedit blah.bin`
