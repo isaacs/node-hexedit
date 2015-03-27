@@ -3,15 +3,8 @@
   "name": "hexedit",
   "description": "Hexadecimal Editor",
   "version": "1.0.1",
-  "preferGlobal": true,
   "bin": "./hexedit.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/isaacs/node-hexedit.git"
-  },
-  "engines": {
-    "node": "0.5 || 0.6"
-  },
+  "repository": "https://github.com/isaacs/node-hexedit",
   "dependencies": {
     "hexy": "~0.2.1",
     "nopt": "~1.0.10"
