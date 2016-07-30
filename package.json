@@ -7,6 +7,6 @@
   "repository": "https://github.com/isaacs/node-hexedit",
   "dependencies": {
     "hexy": "~0.2.1",
-    "nopt": "~1.0.10"
+    "nopt": "~3.0.6"
   }
 }
