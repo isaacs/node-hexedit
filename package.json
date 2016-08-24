@@ -6,7 +6,7 @@
   "bin": "./hexedit.js",
   "repository": "https://github.com/isaacs/node-hexedit",
   "dependencies": {
-    "hexy": "~0.2.1",
+    "hexy": "~0.2.7",
     "nopt": "~1.0.10"
   }
 }
